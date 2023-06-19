@@ -7,9 +7,9 @@ def sort(path):
     :param path: путь к папке которую надо отсортировать
     :return: вывод пустой
     """
-    # 1 - получить путь на папку
-    # 2 - взять циклом каждый файл и положить его в соответствующую папку. если папка не создана - создать ее при помощи функции create_folder и generate_folder_name
-
+    print("----------------")
+    for filename in os.listdir(path):
+        print(f"{filename} - {os.path.splitext(filename)[1]}")
 
     return
 
@@ -21,11 +21,11 @@ def normalize(name):
     :param name: название файла
     :return: возвращает нормализированное название файла
     """
-    cyrillic_simbols = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ!\"#$%&'()*+,-"
+    cyrillic_simbols = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ!\"#$%&'()*+,- "
     translation = (
         "a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",
         "f", "h", "ts", "ch", "sh", "sch", "", "y", "", "e", "yu", "ya", "je", "i", "ji", "g", "_", "_", "_", "_", "_",
-        "_", "_", "_", "_", "_", "_", "_", "_")
+        "_", "_", "_", "_", "_", "_", "_", "_", "_")
 
     trans = {}
     for c, t in zip(cyrillic_simbols, translation):
@@ -33,6 +33,20 @@ def normalize(name):
         trans[ord(c.upper())] = t.upper()
 
     return name.translate(trans)
+
+
+def rename_files(path: str):
+    """
+    функция переименовывает все файлы в указанной директории
+    :param path: путь к директории
+    :return:
+    """
+    for filename in os.listdir(path):
+        if os.path.isfile(os.path.join(path, filename)):
+            print(f"{filename} -> {normalize(filename)}")
+            old_name = os.path.join(path, filename)
+            new_name = os.path.join(path, normalize(filename))
+            os.replace(old_name, new_name)
 
 
 def create_folder(path: str, name_dir: str):
@@ -69,10 +83,6 @@ def generate_folder_name(extension: str) -> str:
 
 
 if __name__ == '__main__':
-    pass
-
-"""
-    1) нормализируем названия файлов в папке
-    2) создаем папки
-    3) по расширению файла - переносим файлы в папки
-"""
+    path = input("Введи пусть к папке: ")
+    rename_files(path)
+    sort(path)
