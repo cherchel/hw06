@@ -1,11 +1,11 @@
 import os
-import shutil
 
-def sort(path):
+
+def sort(path: str):
     """
     данная функия сортирует файлы по папкам, критерием сортировки выступает расширение файла
     :param path: путь к папке которую надо отсортировать
-    :return: вывод пустой
+    :return:
     """
     for filename in os.listdir(path):
         extension = os.path.splitext(filename)[1][1:]   # определение расширения
@@ -14,13 +14,12 @@ def sort(path):
 
         old_path_file = f"{path}{filename}"
         new_path_file = f"{path}{folder_name}\\{filename}"
-        # print(f"{old_path_file} -> {new_path_file}")
-        shutil.move(old_path_file,new_path_file)
+        os.replace(old_path_file, new_path_file)        # перемещение файла в новую папку
 
     return
 
 
-def normalize(name):
+def normalize(name: str):
     """
     данная функция нормализует название файла: приводит транслитерацию кириллического алфавита
     на латинский b аменяет все символы кроме латинских букв, цифр на '_'.
@@ -57,8 +56,8 @@ def rename_files(path: str):
 def create_folder(path: str, name_dir: str):
     """
     создание папки для сортировки
-    :param path:
-    :param name_dir:
+    :param path: директория в которой надо создать новую папку
+    :param name_dir: название которое надо дать новой папке
     :return:
     """
     new_dir = f"{path}/{name_dir}"
@@ -75,7 +74,7 @@ def generate_folder_name(extension: str) -> str:
     match_dict = {
         'image': ('JPEG', 'PNG', 'JPG', 'SVG'),
         'video': ('AVI', 'MP4', 'MOV', 'MKV'),
-        'document': ('DOC', 'DOCX', 'TXT', 'PDF', 'XLSX', 'PPTX'),
+        'document': ('DOC', 'DOCX', 'TXT', 'PDF', 'XLSX', 'XLS', 'PPTX'),
         'music': ('MP3', 'OGG', 'WAV', 'AMR'),
         'arch': ('ZIP', 'GZ', 'TAR'),
     }
@@ -89,6 +88,5 @@ def generate_folder_name(extension: str) -> str:
 
 if __name__ == '__main__':
     path = input("Введи пусть к папке: ")
-    rename_files(path)
-    print("----------------")
-    sort(path)
+    rename_files(path)                      # все файлы в указанной папке - стандартизируются(нормализируются)
+    sort(path)                              # происходит сортировка файлов по папкам согласно их расширениям
