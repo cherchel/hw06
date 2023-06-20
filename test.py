@@ -1,11 +1,12 @@
 import os
 
 
-def get_subfolder_paths(folder_path) -> list:
-    subfolder_paths = [f.path for f in os.scandir(folder_path) if f.is_dir()]
+def sort(path):
+    for filename in os.listdir(path):
+        extension = os.path.splitext(filename)[1][1:]   # определение расширения
+        folder_name = generate_folder_name(extension)   # создание название новой папки
+        create_folder(path, folder_name)                # создание новой папки
+        new_path = f"{path}{folder_name}"              # создание пути
+        shutil.move(path, new_path)                     # перемещение файла в папку
 
-    return subfolder_paths
-
-
-if __name__ == '__main__':
-    print(get_subfolder_paths('d:\\GoIT\\modul06'))
+    return
