@@ -1,5 +1,5 @@
 import os
-
+import shutil
 
 def sort(path):
     """
@@ -7,9 +7,15 @@ def sort(path):
     :param path: путь к папке которую надо отсортировать
     :return: вывод пустой
     """
-    print("----------------")
     for filename in os.listdir(path):
-        print(f"{filename} - {os.path.splitext(filename)[1]}")
+        extension = os.path.splitext(filename)[1][1:]   # определение расширения
+        folder_name = generate_folder_name(extension)   # создание название новой папки
+        create_folder(path, folder_name)                # создание новой папки
+
+        old_path_file = f"{path}{filename}"
+        new_path_file = f"{path}{folder_name}\\{filename}"
+        # print(f"{old_path_file} -> {new_path_file}")
+        shutil.move(old_path_file,new_path_file)
 
     return
 
@@ -43,7 +49,6 @@ def rename_files(path: str):
     """
     for filename in os.listdir(path):
         if os.path.isfile(os.path.join(path, filename)):
-            print(f"{filename} -> {normalize(filename)}")
             old_name = os.path.join(path, filename)
             new_name = os.path.join(path, normalize(filename))
             os.replace(old_name, new_name)
@@ -85,4 +90,5 @@ def generate_folder_name(extension: str) -> str:
 if __name__ == '__main__':
     path = input("Введи пусть к папке: ")
     rename_files(path)
+    print("----------------")
     sort(path)
